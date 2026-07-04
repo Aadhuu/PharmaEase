@@ -24,5 +24,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('subcategory/<int:i>',views.Sub_category.as_view(),name='subcategory'),
     path('product/<int:i>',views.Products.as_view(),name='product'),
+    path('productdetail/<int:i>',views.ProductDetail.as_view(),name='productdetail'),
 
 ]
