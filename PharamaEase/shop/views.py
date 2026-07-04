@@ -24,3 +24,10 @@ class Products(View):
         p=Product.objects.filter(sub_category=s)
         context={'subcategory':s,'products':p}
         return render(request, 'product.html', context)
+
+class ProductDetail(View):
+    def get(self, request, i):
+        p=Product.objects.get(id=i)
+        context={'product':p}
+        return render(request, 'productdetail.html', context)
+
