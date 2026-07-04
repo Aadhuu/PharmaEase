@@ -18,4 +18,9 @@ class Sub_category(View):
         return render(request, 'subcategory.html', context)
 
 
-
+class Products(View):
+    def get(self, request, i):
+        s=SubCategory.objects.get(id=i)
+        p=Product.objects.filter(sub_category=s)
+        context={'subcategory':s,'products':p}
+        return render(request, 'product.html', context)
