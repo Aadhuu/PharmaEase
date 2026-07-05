@@ -20,7 +20,7 @@ class Product(models.Model):
     price = models.IntegerField()
     stock = models.IntegerField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE, null=True)
+    sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE, related_name='sub_category' ,null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     prescription =models.BooleanField(default=False)

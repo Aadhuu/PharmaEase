@@ -25,82 +25,177 @@
 
 <body>
 
-  <div class="site-wrap">
+  <div class="site-navbar py-2">
 
+  <div class="search-wrap">
+    <div class="container">
+      <a href="#" class="search-close js-search-close">
+        <span class="icon-close2"></span>
+      </a>
+      <form action="#" method="post">
+        <input type="text" class="form-control" placeholder="Search keyword and hit enter...">
+      </form>
+    </div>
+  </div>
 
-    <div class="site-navbar py-2">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center justify-content-between">
 
-      <div class="search-wrap">
-        <div class="container">
-          <a href="#" class="search-close js-search-close"><span class="icon-close2"></span></a>
-          <form action="#" method="post">
-            <input type="text" class="form-control" placeholder="Search keyword and hit enter...">
-          </form>
+      <!-- Logo -->
+      <div class="logo mr-auto">
+        <div class="site-logo px-5">
+          <a href="{% url 'home' %}" class="js-logo-clone">PharmaEase</a>
         </div>
       </div>
 
-      <div class="container-fluid ">
-        <div class="d-flex align-items-center justify-content-between">
-          <div class="logo mr-auto">
-    <div class="site-logo px-5">
-        <a href="" class="js-logo-clone ">PharmaEase</a>
-    </div>
-</div>
-          <div class="main-nav d-none d-lg-block">
-            <nav class="site-navigation text-right text-md-center" role="navigation">
-              <ul class="site-menu js-clone-nav d-none d-lg-block">
-                <li class="active"><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="shop.html">Store</a></li>
-                <li class="has-children">
-                  <a href="#">Dropdown</a>
-                  <ul class="dropdown">
-                    <li><a href="#">Supplements</a></li>
-                    <li class="has-children">
-                      <a href="#">Vitamins</a>
-                      <ul class="dropdown">
-                        <li><a href="#">Supplements</a></li>
-                        <li><a href="#">Vitamins</a></li>
-                        <li><a href="#">Diet &amp; Nutrition</a></li>
-                        <li><a href="#">Tea &amp; Coffee</a></li>
-                      </ul>
-                    </li>
-                    <li><a href="#">Diet &amp; Nutrition</a></li>
-                    <li><a href="#">Tea &amp; Coffee</a></li>
+      <!-- Navbar -->
+      <div class="main-nav d-none d-lg-block">
+        <nav class="site-navigation text-right text-md-center" role="navigation">
+          <ul class="site-menu js-clone-nav d-none d-lg-block">
 
-                  </ul>
-                </li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
-              </ul>
-            </nav>
-          </div>
-          <div class="icons">
-            <a href="#" class="icons-btn d-inline-block js-search-open"><span class="icon-search"></span></a>
-            <a href="cart.html" class="icons-btn d-inline-block bag">
-              <span class="icon-shopping-bag"></span>
-              <span class="number">2</span>
-            </a>
-            <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none"><span
-                class="icon-menu"></span></a>
-          </div>
-          <div class="ml-auto d-flex align-items-center">
+            {% if user.is_authenticated and user.is_superuser %}
 
-    <div class="mr-3 px-3">
-        <a href="">Logout</a>
-    </div>
+              <!-- Admin Navbar -->
+              <li class="active">
+                <a href="{% url 'home' %}">Home</a>
+              </li>
 
-    <div class="mr-3 px-3">
-        <a href="{% url 'accounts:userlogin' %}">Login</a>
-    </div>
+              <li class="has-children">
+                <a href="#">Category</a>
+                <ul class="dropdown">
+                  {% for i in links %}
+                  <li class="has-children">
+                    <a href="{% url 'shop:subcategory' i.id %}">{{ i.name }}</a>
 
-    <div class="pe-5">
-        <a href="{% url 'accounts:register' %}">Register</a>
-    </div>
+                    <ul class="dropdown">
+                      {% for sub in i.sub_category.all %}
+                      <li>
+                        <a href="{% url 'products' sub.id %}">
+                          {{ sub.name }}
+                        </a>
+                      </li>
+                      {% endfor %}
+                    </ul>
 
-</div>
-        </div>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </li>
+
+              <li>
+                <a href="">Add Category</a>
+              </li>
+
+              <li>
+                <a href="">Add Product</a>
+              </li>
+
+            {% else %}
+
+              <!-- User / Guest Navbar -->
+              <li class="active">
+                <a href="{% url 'home' %}">Home</a>
+              </li>
+
+              <li>
+                <a href="shop.html">Store</a>
+              </li>
+
+              <li class="has-children">
+                <a href="#">Category</a>
+                <ul class="dropdown">
+
+                  {% for i in links %}
+                  <li class="has-children">
+
+                    <a href="{% url 'shop:subcategory' i.id %}">
+                      {{ i.name }}
+                    </a>
+
+                    <ul class="dropdown">
+                      {% for sub in i.sub_category.all %}
+                      <li>
+                        <a href="{% url 'products' sub.id %}">
+                          {{ sub.name }}
+                        </a>
+                      </li>
+                      {% endfor %}
+                    </ul>
+
+                  </li>
+                  {% endfor %}
+
+                </ul>
+              </li>
+
+              <li>
+                <a href="about.html">About</a>
+              </li>
+
+              <li>
+                <a href="contact.html">Contact</a>
+              </li>
+
+            {% endif %}
+
+          </ul>
+        </nav>
       </div>
+
+      <!-- Icons -->
+      <div class="icons">
+
+        {% if not user.is_authenticated or not user.is_superuser %}
+
+          <a href="#" class="icons-btn d-inline-block js-search-open">
+            <span class="icon-search"></span>
+          </a>
+
+
+
+        {% endif %}
+
+        <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none">
+          <span class="icon-menu"></span>
+        </a>
+
+
+
+      </div>
+
+
+      <!-- Login / Logout -->
+        {% if user.is_authenticated %}
+
+          <a href="cart.html" class="icons-btn d-inline-block bag">
+            <span class="icon-shopping-bag"></span>
+            <span class="number">2</span>
+          </a>
+        <div class="ml-auto d-flex align-items-center">
+
+          <div class="mr-3 px-3">
+            <a href="{% url 'accounts:userlogout' %}">Logout</a>
+          </div>
+
+
+        {% else %}
+
+          <div class="mr-3 px-3">
+            <a href="{% url 'accounts:userlogin' %}">Login</a>
+          </div>
+
+          <div class="pe-5">
+            <a href="{% url 'accounts:register' %}">Register</a>
+          </div>
+
+        {% endif %}
+
+      </div>
+
     </div>
+  </div>
+
+</div>
 {% block content %}
     home
     {% endblock %}

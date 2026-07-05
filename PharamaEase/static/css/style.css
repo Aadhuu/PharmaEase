@@ -12,6 +12,20 @@
 .card img{
     border-radius:15px 15px 0 0;
 }
+.dropdown .has-children {
+    position: relative;
+}
+
+.dropdown .has-children > .dropdown {
+    top: 0;
+    left: 100%;
+    display: none;
+    position: absolute;
+}
+
+.dropdown .has-children:hover > .dropdown {
+    display: block;
+}
 body {
   line-height: 1.7;
   color: #8c92a0;

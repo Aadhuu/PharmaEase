@@ -45,4 +45,4 @@ class UserLogin(View):
 class UserLogout(View):
     def get(self,request):
         logout(request)
-        return redirect('home')
+        return redirect('accounts:userlogin')
