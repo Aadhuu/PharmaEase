@@ -48,7 +48,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-LOGIN_URL='shop:userlogin'
+LOGIN_URL='accounts:userlogin'
 ROOT_URLCONF = 'PharamaEase.urls'
 import os
 TEMPLATES = [
@@ -117,4 +117,4 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+
