@@ -39,17 +39,17 @@
         </div>
       </div>
 
-      <div class="container">
+      <div class="container-fluid ">
         <div class="d-flex align-items-center justify-content-between">
-          <div class="logo">
-            <div class="site-logo">
-              <a href="index.html" class="js-logo-clone">PharmaEase</a>
-            </div>
-          </div>
+          <div class="logo mr-auto">
+    <div class="site-logo px-5">
+        <a href="" class="js-logo-clone ">PharmaEase</a>
+    </div>
+</div>
           <div class="main-nav d-none d-lg-block">
             <nav class="site-navigation text-right text-md-center" role="navigation">
               <ul class="site-menu js-clone-nav d-none d-lg-block">
-                <li class="active"><a href="index.html">Home</a></li>
+                <li class="active"><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="shop.html">Store</a></li>
                 <li class="has-children">
                   <a href="#">Dropdown</a>
@@ -83,6 +83,21 @@
             <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none"><span
                 class="icon-menu"></span></a>
           </div>
+          <div class="ml-auto d-flex align-items-center">
+
+    <div class="mr-3 px-3">
+        <a href="">Logout</a>
+    </div>
+
+    <div class="mr-3 px-3">
+        <a href="">Login</a>
+    </div>
+
+    <div class="pe-5">
+        <a href="{% url 'accounts:register' %}">Register</a>
+    </div>
+
+</div>
         </div>
       </div>
     </div>
