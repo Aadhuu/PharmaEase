@@ -7,6 +7,8 @@ from shop.forms import CategoryForm, ProductForm
 
 from shop.forms import SubCategoryForm
 
+from shop.forms import StockForm
+
 
 class Home(View):
     def get(self, request):
@@ -66,6 +68,19 @@ class AddProduct(View):
         return render(request, 'addproduct.html', context)
     def post(self, request):
         form_instance=ProductForm(request.POST,request.FILES)
+        if form_instance.is_valid():
+            form_instance.save()
+            return redirect('home')
+
+class AddStock(View):
+    def get(self, request,i):
+        p=Product.objects.get(id=i)
+        form_instance=StockForm(instance=p)
+        context={'form':form_instance}
+        return render(request, 'addstock.html', context)
+    def post(self, request,i):
+        p=Product.objects.get(id=i)
+        form_instance=StockForm(request.POST,instance=p)
         if form_instance.is_valid():
             form_instance.save()
             return redirect('home')

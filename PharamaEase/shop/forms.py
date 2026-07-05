@@ -17,3 +17,8 @@ class SubCategoryForm(forms.ModelForm):
     class Meta:
         model=SubCategory
         fields = '__all__'
+
+class StockForm(forms.ModelForm):
+    class Meta:
+        model=Product
+        fields = ['stock']

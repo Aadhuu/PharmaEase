@@ -23,6 +23,7 @@ urlpatterns = [
     path('', views.Home.as_view(), name='home'),
     path('', include('shop.urls')),
     path('',include('accounts.urls')),
+    path('',include('cart.urls')),
 
 ]
 from django.conf.urls.static import static

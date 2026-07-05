@@ -170,7 +170,7 @@
       <!-- Login / Logout -->
         {% if user.is_authenticated %}
 
-          <a href="cart.html" class="icons-btn d-inline-block bag">
+          <a href="{% url 'cart:cartview' %}" class="icons-btn d-inline-block bag">
             <span class="icon-shopping-bag"></span>
             <span class="number">2</span>
           </a>
