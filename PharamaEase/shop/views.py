@@ -1,7 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 
 from shop.models import Category, SubCategory,Product
+
+from shop.forms import CategoryForm, ProductForm
+
+from shop.forms import SubCategoryForm
 
 
 class Home(View):
@@ -31,3 +35,37 @@ class ProductDetail(View):
         context={'product':p}
         return render(request, 'productdetail.html', context)
 
+class AddCategory(View):
+    def get(self, request):
+        form_instance=CategoryForm()
+        context={'form':form_instance}
+        return render(request, 'addcategory.html', context)
+    def post(self, request):
+        form_instance=CategoryForm(request.POST,request.FILES)
+        if form_instance.is_valid():
+            form_instance.save()
+            return redirect('home')
+
+class AddSubCategory(View):
+    def get(self, request):
+        form_instance=SubCategoryForm()
+        context={'form':form_instance}
+        return render(request, 'addsubcategory.html', context)
+    def post(self, request):
+        form_instance=SubCategoryForm(request.POST,request.FILES)
+        if form_instance.is_valid():
+            if form_instance.is_valid():
+                form_instance.save()
+                return redirect('home')
+
+
+class AddProduct(View):
+    def get(self, request):
+        form_instance=ProductForm()
+        context={'form':form_instance}
+        return render(request, 'addproduct.html', context)
+    def post(self, request):
+        form_instance=ProductForm(request.POST,request.FILES)
+        if form_instance.is_valid():
+            form_instance.save()
+            return redirect('home')

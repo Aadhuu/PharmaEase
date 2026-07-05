@@ -25,5 +25,8 @@ urlpatterns = [
     path('subcategory/<int:i>',views.Sub_category.as_view(),name='subcategory'),
     path('product/<int:i>',views.Products.as_view(),name='product'),
     path('productdetail/<int:i>',views.ProductDetail.as_view(),name='productdetail'),
+    path('addproduct',views.AddProduct.as_view(),name='addproduct'),
+    path('addcategory',views.AddCategory.as_view(),name='addcategory'),
+    path('addsubcategory',views.AddSubCategory.as_view(),name='addsubcategory'),
 
 ]

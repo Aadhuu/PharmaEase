@@ -83,11 +83,14 @@
               </li>
 
               <li>
-                <a href="">Add Category</a>
+                <a href="{% url 'shop:addcategory' %}">Add Category</a>
+              </li>
+              <li>
+                <a href="{% url 'shop:addsubcategory' %}">Add Sub Category</a>
               </li>
 
               <li>
-                <a href="">Add Product</a>
+                <a href="{% url 'shop:addproduct' %}">Add Product</a>
               </li>
 
             {% else %}
