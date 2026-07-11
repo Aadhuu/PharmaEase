@@ -42,3 +42,7 @@ class CartRemove(View):
         c=Cart.objects.get(id=i)
         c.delete()
         return redirect('cart:cartview')
+
+class Checkout(View):
+    def get(self,request):
+        form_instance
