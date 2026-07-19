@@ -29,14 +29,21 @@
 
   <div class="search-wrap">
     <div class="container">
-      <a href="#" class="search-close js-search-close">
-        <span class="icon-close2"></span>
-      </a>
-      <form action="#" method="post">
-        <input type="text" class="form-control" placeholder="Search keyword and hit enter...">
+      <form action="{% url 'search:search' %}" method="get" >
+        <input type="text" class="form-control" name="q" placeholder="Search keyword and hit enter...">
       </form>
     </div>
   </div>
+<!--    <div class="search-wrap">-->
+<!--    <div class="container">-->
+<!--      <form action="{% url 'search:search' %}" method="get">-->
+<!--        <div class="input-group">-->
+<!--        <input type="text" class="form-control" name="q" placeholder="Search keyword and hit enter...">-->
+<!--        <span class="input-group-addon close-search"><button type="submit"><i class="icon-search"></i></button></span>-->
+<!--      </div>-->
+<!--      </form>-->
+<!--    </div>-->
+<!--  </div>-->
 
   <div class="container-fluid">
     <div class="d-flex align-items-center justify-content-between">

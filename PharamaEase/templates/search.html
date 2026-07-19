@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+        <div class="container p-5">
+            {% if products %}
+
+            <div class="row special-list">
+                 {% for i in products %}
+                <div class="col-lg-3 col-md-6 special-grid best-seller">
+                    <div class="products-single fix">
+
+                        <div class="box-img-hover">
+
+
+                            <img src="{{ i.image.url }}" class="" alt="Image" height="250px" width="100%">
+                            <div class="mask-icon">
+
+                                <a class="cart" href="{% url 'shop:productdetail' i.id %}">Details</a>
+                            </div>
+                        </div>
+                        <div class="why-text">
+                            <h4>{{i.name}}</h4>
+                            <h5>{{i.price}}</h5>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+                    </div>
+                </div>
+{% else %}
+<h3 class="text-danger fs-2 fw-bold text-center" >No Search Results Found</h3>
+{% endif %}
+
+
+{% endblock %}

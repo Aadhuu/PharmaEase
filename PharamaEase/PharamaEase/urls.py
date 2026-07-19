@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('shop.urls')),
     path('',include('accounts.urls')),
     path('',include('cart.urls')),
+    path('',include('search.urls')),
 
 ]
 from django.conf.urls.static import static
