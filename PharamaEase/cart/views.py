@@ -56,18 +56,22 @@ class Checkout(View):
             u=request.user
             o.user=u
 
-            c=Cart.objects.get(user=u)
+            c=Cart.objects.filter(user=u)
             total=0
             for i in c:
                 total+=i.subtotal()
             o.amount=total
             o.save()
-            if o.payment_method == "Online Payment":
+            if o.payment_method == "Online":
                 client=razorpay.Client(auth=('rzp_test_T6IP07TeCheda2','S9k2VRBBxxkWL6m0rCxWVd5p'))
                 print(client)
+
+                response_payment=client.order.create(dict(amount=total*100,currency='INR'))
+                print(response_payment)
             else:
                 pass
-        return render(request,'payment.html')
+            context={'payment':response_payment}
+        return render(request,'payment.html',context)
     def get(self,request):
         form_instance=CheckoutForm()
         cart=Cart.objects.filter(user=request.user)
@@ -79,5 +83,7 @@ class Checkout(View):
         context={'form':form_instance,'prescription':prescription}
         return render(request,'checkout.html',context)
 
-
+class Payment_success(View):
+    def post(self,request):
+        return render(request,'paymentsuccess.html')
 

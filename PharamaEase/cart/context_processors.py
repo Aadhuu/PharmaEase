@@ -8,7 +8,7 @@ def cart_items(request):
         c = Cart.objects.filter(user=u)
 
         for i in c:
-           total+=i.quantity
+           total+=i.subtotal()
 
 
-    return {'total':total}
+    return {'total':total,'cart_items':c}
