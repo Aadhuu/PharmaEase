@@ -67,12 +67,12 @@ class Checkout(View):
                 print(client)
             else:
                 pass
-
+        return render(request,'payment.html')
     def get(self,request):
         form_instance=CheckoutForm()
-        c=Cart.objects.filter(user=request.user)
+        cart=Cart.objects.filter(user=request.user)
         prescription=False
-        for i in c:
+        for i in cart:
             if i.product.prescription:
                 prescription=True
                 break
