@@ -11,4 +11,4 @@ def cart_items(request):
            total+=i.subtotal()
 
 
-    return {'total':total,'cart_items':c}
+    return {'total':total}

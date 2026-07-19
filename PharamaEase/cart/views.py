@@ -2,12 +2,18 @@ from http.client import responses
 
 import razorpay
 from django.shortcuts import render, redirect
+
 from django.views import View
 
 from cart.models import Cart
+from django.views.decorators.csrf import csrf_exempt
 from shop.models import Product
 
 from cart.forms import CheckoutForm
+
+from cart.models import Order
+
+from cart.models import OrderItem
 
 
 class AddtoCart(View):
@@ -68,6 +74,10 @@ class Checkout(View):
 
                 response_payment=client.order.create(dict(amount=total*100,currency='INR'))
                 print(response_payment)
+
+                o.order_id=response_payment['id']
+                o.save()
+
             else:
                 pass
             context={'payment':response_payment}
@@ -82,8 +92,25 @@ class Checkout(View):
                 break
         context={'form':form_instance,'prescription':prescription}
         return render(request,'checkout.html',context)
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
-class Payment_success(View):
+@method_decorator(csrf_exempt,name='dispatch')
+class Paymentsuccess(View):
     def post(self,request):
+        print(request.POST)
+        id=request.POST.get('razorpay_order_id')
+        o=Order.objects.get(order_id=id)
+        o.is_ordered = True
+        o.save()
+        c=Cart.objects.filter(user=request.user)
+        for i in c:
+            item=OrderItem.objects.create(order=o,product=i.product,quantity=i.quantity)
+            item.save()
+            item.product.stock=item.quantity
+            item.product.save()
+
+        c.delete()
+
         return render(request,'paymentsuccess.html')
 
