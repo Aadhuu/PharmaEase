@@ -34,16 +34,6 @@
       </form>
     </div>
   </div>
-<!--    <div class="search-wrap">-->
-<!--    <div class="container">-->
-<!--      <form action="{% url 'search:search' %}" method="get">-->
-<!--        <div class="input-group">-->
-<!--        <input type="text" class="form-control" name="q" placeholder="Search keyword and hit enter...">-->
-<!--        <span class="input-group-addon close-search"><button type="submit"><i class="icon-search"></i></button></span>-->
-<!--      </div>-->
-<!--      </form>-->
-<!--    </div>-->
-<!--  </div>-->
 
   <div class="container-fluid">
     <div class="d-flex align-items-center justify-content-between">
@@ -153,29 +143,14 @@
       </div>
 
       <!-- Icons -->
-      <div class="icons">
 
-        {% if not user.is_authenticated or not user.is_superuser %}
-
-          <a href="#" class="icons-btn d-inline-block js-search-open">
-            <span class="icon-search"></span>
-          </a>
-
-
-
-        {% endif %}
-
-        <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none">
-          <span class="icon-menu"></span>
-        </a>
-
-
-
-      </div>
 
 
       <!-- Login / Logout -->
         {% if user.is_authenticated %}
+           <div class="mr-3 px-3">
+            <a href="{% url 'cart:myorder' %}">My order</a>
+          </div>
 
           <a href="{% url 'cart:cartview' %}" class="icons-btn d-inline-block bag">
             <span class="icon-shopping-bag"></span>
@@ -199,8 +174,24 @@
           </div>
 
         {% endif %}
+          <div class="icons">
+
+        {% if not user.is_authenticated or not user.is_superuser %}
+
+          <a href="#" class="icons-btn d-inline-block js-search-open">
+            <span class="icon-search"></span>
+          </a>
+
+
+
+        {% endif %}
+
+
 
       </div>
+
+      </div>
+
 
     </div>
   </div>

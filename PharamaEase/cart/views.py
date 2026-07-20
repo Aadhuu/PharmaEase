@@ -1,4 +1,4 @@
-from http.client import responses
+import uuid
 
 import razorpay
 from django.shortcuts import render, redirect
@@ -14,8 +14,10 @@ from cart.forms import CheckoutForm
 from cart.models import Order
 
 from cart.models import OrderItem
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
-
+@method_decorator(login_required,name='dispatch')
 class AddtoCart(View):
     def get(self,request,i):
         u=request.user
@@ -30,6 +32,7 @@ class AddtoCart(View):
 
         return redirect('cart:cartview')
 
+@method_decorator(login_required,name='dispatch')
 class CartView(View):
     def get(self,request):
         c=Cart.objects.filter(user=request.user)
@@ -61,7 +64,6 @@ class Checkout(View):
             o=form_instance.save(commit=False)
             u=request.user
             o.user=u
-
             c=Cart.objects.filter(user=u)
             total=0
             for i in c:
@@ -78,10 +80,23 @@ class Checkout(View):
                 o.order_id=response_payment['id']
                 o.save()
 
+                context = {'payment': response_payment}
+                return render(request, 'payment.html', context)
             else:
-                pass
-            context={'payment':response_payment}
-        return render(request,'payment.html',context)
+                id='ord_cod'+uuid.uuid4().hex[:14]
+                o.order_id=id
+                o.is_ordered = True
+                o.save()
+                c = Cart.objects.filter(user=request.user)
+                for i in c:
+                    item = OrderItem.objects.create(order=o, product=i.product, quantity=i.quantity)
+                    item.save()
+                    item.product.stock = item.quantity
+                    item.product.save()
+
+                c.delete()
+
+                return render(request,'payment.html')
     def get(self,request):
         form_instance=CheckoutForm()
         cart=Cart.objects.filter(user=request.user)
@@ -114,3 +129,8 @@ class Paymentsuccess(View):
 
         return render(request,'paymentsuccess.html')
 
+class MyOrder(View):
+    def get(self,request):
+        o=Order.objects.filter(user=request.user)
+        context={'orders':o}
+        return render(request,'myorder.html',context)

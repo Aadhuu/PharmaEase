@@ -1,4 +1,6 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.utils.decorators import method_decorator
 from django.views import View
 
 from shop.models import Category, SubCategory,Product
@@ -37,6 +39,7 @@ class ProductDetail(View):
         context={'product':p}
         return render(request, 'productdetail.html', context)
 
+@method_decorator(login_required,name='dispatch')
 class AddCategory(View):
     def get(self, request):
         form_instance=CategoryForm()
@@ -48,6 +51,7 @@ class AddCategory(View):
             form_instance.save()
             return redirect('home')
 
+@method_decorator(login_required,name='dispatch')
 class AddSubCategory(View):
     def get(self, request):
         form_instance=SubCategoryForm()
@@ -60,7 +64,7 @@ class AddSubCategory(View):
                 form_instance.save()
                 return redirect('home')
 
-
+@method_decorator(login_required,name='dispatch')
 class AddProduct(View):
     def get(self, request):
         form_instance=ProductForm()
@@ -71,7 +75,7 @@ class AddProduct(View):
         if form_instance.is_valid():
             form_instance.save()
             return redirect('home')
-
+@method_decorator(login_required,name='dispatch')
 class AddStock(View):
     def get(self, request,i):
         p=Product.objects.get(id=i)
