@@ -4,6 +4,8 @@ from django.views import View
 from accounts.forms import RegisterForm
 
 from accounts.forms import LoginForm
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 
 class Register(View):
@@ -42,6 +44,7 @@ class UserLogin(View):
                 messages.error(request,'Email or Password is incorrect')
                 return redirect('accounts:userlogin')
 
+@method_decorator(login_required,name='dispatch')
 class UserLogout(View):
     def get(self,request):
         logout(request)

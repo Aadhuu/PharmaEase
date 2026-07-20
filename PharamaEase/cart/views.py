@@ -42,6 +42,7 @@ class CartView(View):
         context={'total':total,'cart':c}
         return render(request,'cart.html',context)
 
+@method_decorator(login_required,name='dispatch')
 class CartDecrement(View):
     def get(self,request,i):
         c=Cart.objects.get(id=i)
@@ -51,12 +52,15 @@ class CartDecrement(View):
         else:
             c.delete()
         return redirect('cart:cartview')
+
+@method_decorator(login_required, name='dispatch')
 class CartRemove(View):
     def get(self,request,i):
         c=Cart.objects.get(id=i)
         c.delete()
         return redirect('cart:cartview')
 
+@method_decorator(login_required,name='dispatch')
 class Checkout(View):
     def post(self,request):
         form_instance=CheckoutForm(request.POST,request.FILES)
@@ -110,6 +114,7 @@ class Checkout(View):
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
+@method_decorator(login_required,name='dispatch')
 @method_decorator(csrf_exempt,name='dispatch')
 class Paymentsuccess(View):
     def post(self,request):
@@ -129,6 +134,7 @@ class Paymentsuccess(View):
 
         return render(request,'paymentsuccess.html')
 
+@method_decorator(login_required,name='dispatch')
 class MyOrder(View):
     def get(self,request):
         o=Order.objects.filter(user=request.user)
