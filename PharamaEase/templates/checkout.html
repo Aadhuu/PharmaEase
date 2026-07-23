@@ -67,11 +67,32 @@
     </div>
 
      {% if prescription %}
-    <div class="form-group">
-        <label>Prescription</label>
-        {{ form.prescription }}
-    </div>
-     {% endif %}
+
+    {% if status == "Pending" %}
+        <div class="alert alert-warning">
+            Your prescription is waiting for admin approval.
+        </div>
+
+    {% elif status == "Approved" %}
+        <div class="alert alert-success">
+            Your prescription has been approved.
+        </div>
+
+    {% elif status == "Rejected" %}
+        <div class="form-group">
+            <label>Upload New Prescription</label>
+            {{ form.prescription }}
+        </div>
+
+    {% else %}
+        <div class="form-group">
+            <label>Prescription</label>
+            {{ form.prescription }}
+        </div>
+
+    {% endif %}
+
+{% endif %}
 
 </div>
 
@@ -149,9 +170,35 @@
                   </div>
 
                   <div class="form-group">
-                    <button class="btn btn-primary btn-lg btn-block" type="submit">Place
-                      Order</button>
-                  </div>
+
+{% if prescription %}
+
+    {% if status == "Approved" %}
+        <button class="btn btn-primary btn-lg btn-block" type="submit">
+            Place Order
+        </button>
+
+    {% elif status == "Pending" %}
+        <button class="btn btn-secondary btn-lg btn-block" disabled>
+            Waiting for Admin Approval
+        </button>
+
+    {% else %}
+        <button class="btn btn-primary btn-lg btn-block" type="submit">
+            Upload Prescription
+        </button>
+
+    {% endif %}
+
+{% else %}
+
+    <button class="btn btn-primary btn-lg btn-block" type="submit">
+        Place Order
+    </button>
+
+{% endif %}
+
+</div>
 
                 </div>
               </div>

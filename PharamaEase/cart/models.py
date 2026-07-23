@@ -27,10 +27,12 @@ class Order(models.Model):
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
     pincode = models.CharField(max_length=10)
-    phone = models.IntegerField(max_length=50)
+    phone = models.CharField(max_length=15)
     is_ordered = models.BooleanField(default=False)
     delivery_status=models.CharField(max_length=100,default="pending")
     prescription=models.FileField(upload_to='prescriptions',null=True,blank=True)
+    PRESCRIPTION_CHOICE=(('Pending','Pending'),('Approved','Approved'),('Rejected','Rejected'))
+    prescription_status=models.CharField(max_length=100,choices=PRESCRIPTION_CHOICE,default="pending")
     order_date = models.DateTimeField(auto_now_add=True)
 
 

@@ -1,6 +1,8 @@
 import uuid
 
 import razorpay
+from django.contrib import messages
+
 from django.shortcuts import render, redirect
 
 from django.views import View
@@ -73,7 +75,17 @@ class Checkout(View):
             for i in c:
                 total+=i.subtotal()
             o.amount=total
+            prescription_required=False
+            for j in c:
+                if j.product.prescription:
+                    prescription_required=True
+                    break
+            if prescription_required:
+                o.prescription_status="Pending"
             o.save()
+            if prescription_required:
+                messages.success(request,'Prescription uploaded succefully. Please wait for admin approval.')
+                return redirect('cart:checkout')
             if o.payment_method == "Online":
                 client=razorpay.Client(auth=('rzp_test_T6IP07TeCheda2','S9k2VRBBxxkWL6m0rCxWVd5p'))
                 print(client)
@@ -109,7 +121,12 @@ class Checkout(View):
             if i.product.prescription:
                 prescription=True
                 break
-        context={'form':form_instance,'prescription':prescription}
+        order=Order.objects.filter(user=request.user).last()
+        status= None
+        if order:
+            status=order.prescription_status
+
+        context={'form':form_instance,'prescription':prescription,'status':status}
         return render(request,'checkout.html',context)
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt

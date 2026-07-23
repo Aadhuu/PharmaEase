@@ -10,7 +10,7 @@ from shop.forms import CategoryForm, ProductForm
 from shop.forms import SubCategoryForm
 
 from shop.forms import StockForm
-
+from shop.decorator import admin_required
 
 class Home(View):
     def get(self, request):
@@ -39,6 +39,7 @@ class ProductDetail(View):
         context={'product':p}
         return render(request, 'productdetail.html', context)
 
+@method_decorator(admin_required,name='dispatch')
 @method_decorator(login_required,name='dispatch')
 class AddCategory(View):
     def get(self, request):
@@ -51,6 +52,7 @@ class AddCategory(View):
             form_instance.save()
             return redirect('home')
 
+@method_decorator(admin_required,name='dispatch')
 @method_decorator(login_required,name='dispatch')
 class AddSubCategory(View):
     def get(self, request):
@@ -64,6 +66,7 @@ class AddSubCategory(View):
                 form_instance.save()
                 return redirect('home')
 
+@method_decorator(admin_required,name='dispatch')
 @method_decorator(login_required,name='dispatch')
 class AddProduct(View):
     def get(self, request):
@@ -75,6 +78,8 @@ class AddProduct(View):
         if form_instance.is_valid():
             form_instance.save()
             return redirect('home')
+
+@method_decorator(admin_required,name='dispatch')
 @method_decorator(login_required,name='dispatch')
 class AddStock(View):
     def get(self, request,i):
