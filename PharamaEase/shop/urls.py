@@ -29,5 +29,8 @@ urlpatterns = [
     path('addcategory',views.AddCategory.as_view(),name='addcategory'),
     path('addsubcategory',views.AddSubCategory.as_view(),name='addsubcategory'),
     path('addstock/<int:i>',views.AddStock.as_view(),name='addstock'),
+    path('prescriptions/',views.PrescriptionList.as_view(),name='prescriptionlist'),
+    path('approve/<int:i>',views.ApprovePrescription.as_view(),name='approveprescription'),
+    path('reject/<int:i>',views.RejectPrescription.as_view(), name='rejectprescription'),
 
 ]

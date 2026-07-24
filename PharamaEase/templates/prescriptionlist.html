@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2 class="mb-4">Prescription Management</h2>
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+
+            <tr>
+                <th>User</th>
+                <th>Medicine</th>
+                <th>Prescription</th>
+                <th>Status</th>
+                <th>Uploaded Date</th>
+                <th>Action</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for p in prescriptions %}
+
+            <tr>
+
+                <td>{{ p.user.username }}</td>
+
+                <td>{{ p.product.name }}</td>
+
+                <td>
+                    <a href="{{ p.prescription.url }}"
+                       target="_blank"
+                       class="btn btn-info btn-sm">
+                        View
+                    </a>
+                </td>
+
+                <td>
+
+                    {% if p.status == "Pending" %}
+
+                        <span class="badge bg-warning text-dark">
+                            Pending
+                        </span>
+
+                    {% elif p.status == "Approved" %}
+
+                        <span class="badge bg-success">
+                            Approved
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-danger">
+                            Rejected
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+                <td>{{ p.uploaded_at }}</td>
+
+                <td>
+
+                    <a href="{% url 'shop:approveprescription' p.id %}"
+                       class="btn btn-success btn-sm">
+                        Approve
+                    </a>
+
+                    <a href="{% url 'shop:rejectprescription' p.id %}"
+                       class="btn btn-danger btn-sm">
+                        Reject
+                    </a>
+
+                </td>
+
+            </tr>
+
+        {% empty %}
+
+            <tr>
+                <td colspan="6" class="text-center">
+                    No Prescriptions Found
+                </td>
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

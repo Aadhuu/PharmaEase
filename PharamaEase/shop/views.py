@@ -7,8 +7,8 @@ from shop.forms import CategoryForm, ProductForm
 from shop.forms import SubCategoryForm
 from shop.forms import StockForm
 from shop.decorator import admin_required
-from prescription.models import Prescription
-from djnago.shortcuts import get_object_or_404
+from prescriptions.models import Prescription
+from django.shortcuts import get_object_or_404
 
 class Home(View):
     def get(self, request):
