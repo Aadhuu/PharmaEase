@@ -66,34 +66,54 @@
         {{ form.payment_method }}
     </div>
 
-     {% if prescription %}
+{% for item in prescription_products %}
 
-    {% if status == "Pending" %}
-        <div class="alert alert-warning">
-            Your prescription is waiting for admin approval.
-        </div>
+<div class="alert alert-light border mt-3">
 
-    {% elif status == "Approved" %}
-        <div class="alert alert-success">
-            Your prescription has been approved.
-        </div>
+    <strong>{{ item.product.name }}</strong><br>
 
-    {% elif status == "Rejected" %}
-        <div class="form-group">
-            <label>Upload New Prescription</label>
-            {{ form.prescription }}
-        </div>
+    {% if item.prescription %}
 
-    {% else %}
-        <div class="form-group">
-            <label>Prescription</label>
-            {{ form.prescription }}
-        </div>
+    {% if item.prescription.status == "Approved" %}
+
+        <span class="text-success">
+            Prescription Approved
+        </span>
+
+    {% elif item.prescription.status == "Rejected" %}
+
+        <span class="text-danger">
+            Prescription Rejected. Please upload a valid prescription.
+        </span>
+
+        <br><br>
+
+        <a href="{% url 'prescriptions:upload' item.product.id %}"
+           class="btn btn-primary btn-sm">
+            Upload Again
+        </a>
+
+
+    {% elif item.prescription.status == "Pending" %}
+
+        <span class="text-warning">
+            Waiting for Admin Approval
+        </span>
 
     {% endif %}
 
+{% else %}
+
+    <a href="{% url 'prescriptions:upload' item.product.id %}"
+       class="btn btn-primary btn-sm">
+        Upload Prescription
+    </a>
+
 {% endif %}
 
+</div>
+
+{% endfor %}
 </div>
 
 
@@ -171,32 +191,13 @@
 
                   <div class="form-group">
 
-{% if prescription %}
 
-    {% if status == "Approved" %}
-        <button class="btn btn-primary btn-lg btn-block" type="submit">
-            Place Order
-        </button>
-
-    {% elif status == "Pending" %}
-        <button class="btn btn-secondary btn-lg btn-block" disabled>
-            Waiting for Admin Approval
-        </button>
-
-    {% else %}
-        <button class="btn btn-primary btn-lg btn-block" type="submit">
-            Upload Prescription
-        </button>
-
-    {% endif %}
-
-{% else %}
 
     <button class="btn btn-primary btn-lg btn-block" type="submit">
         Place Order
     </button>
 
-{% endif %}
+
 
 </div>
 

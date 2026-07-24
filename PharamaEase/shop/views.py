@@ -2,15 +2,13 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.views import View
-
 from shop.models import Category, SubCategory,Product
-
 from shop.forms import CategoryForm, ProductForm
-
 from shop.forms import SubCategoryForm
-
 from shop.forms import StockForm
 from shop.decorator import admin_required
+from prescription.models import Prescription
+from djnago.shortcuts import get_object_or_404
 
 class Home(View):
     def get(self, request):
@@ -93,3 +91,45 @@ class AddStock(View):
         if form_instance.is_valid():
             form_instance.save()
             return redirect('home')
+
+@method_decorator(admin_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
+class PrescriptionList(View):
+
+    def get(self, request):
+
+        prescriptions = Prescription.objects.all().order_by('-uploaded_at')
+
+        context = {
+            'prescriptions': prescriptions
+        }
+
+        return render(request, 'prescriptionlist.html', context)
+
+
+@method_decorator(admin_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
+class ApprovePrescription(View):
+
+    def get(self, request, i):
+
+        prescription = get_object_or_404(Prescription, id=i)
+
+        prescription.status = "Approved"
+        prescription.save()
+
+        return redirect('shop:prescriptionlist')
+
+
+@method_decorator(admin_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
+class RejectPrescription(View):
+
+    def get(self, request, i):
+
+        prescription = get_object_or_404(Prescription, id=i)
+
+        prescription.status = "Rejected"
+        prescription.save()
+
+        return redirect('shop:prescriptionlist')

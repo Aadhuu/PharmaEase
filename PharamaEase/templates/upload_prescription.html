@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h3>Upload Prescription</h3>
+
+    {% for message in messages %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <form method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        {{ form|crispy }}
+
+        <button class="btn btn-primary">
+            Upload
+        </button>
+
+    </form>
+
+    <hr>
+
+    <h4>My Prescriptions</h4>
+
+    <table class="table">
+
+        <tr>
+
+            <th>Medicine</th>
+            <th>Status</th>
+            <th>Uploaded</th>
+
+        </tr>
+
+        {% for p in prescriptions %}
+
+        <tr>
+
+            <td>{{ p.product.name }}</td>
+
+            <td>{{ p.status }}</td>
+
+            <td>{{ p.uploaded_at }}</td>
+
+        </tr>
+
+        {% empty %}
+
+        <tr>
+
+            <td colspan="3">
+
+                No prescription uploaded.
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+{% endblock %}

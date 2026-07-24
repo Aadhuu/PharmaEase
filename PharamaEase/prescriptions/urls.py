@@ -16,9 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from .views import UploadPrescription
 
-
+app_name='prescriptions'
 urlpatterns = [
+    path('upload/<int:product_id>', UploadPrescription.as_view(), name='upload'),
 
 
 ]

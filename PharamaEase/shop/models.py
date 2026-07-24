@@ -25,5 +25,6 @@ class Product(models.Model):
     updated = models.DateTimeField(auto_now=True)
     prescription =models.BooleanField(default=False)
 
-
+    def __str__(self):
+        return self.name
 
